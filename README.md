@@ -14,6 +14,7 @@ Allow access to reacts on hidden posts
   Additional rules: Hide post if ::catdance:: > ::dogjam::
   (^above feature depends on preceding feature)
 Pop-up interface to toggle extension on/off
+CSS transitions - quick smooth fade from original image to notice image
 
 
 

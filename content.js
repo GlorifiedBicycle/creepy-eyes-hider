@@ -11,9 +11,10 @@ const creepKiller = () => {
 
   // filter arrOfReacts for ::eyes:: and count is at least 3
   const arrOfEyes = [];
+  let threshold = 1;
   for (const button of arrOfReacts) {
     if (button.ariaLabel.includes('react with eyes')
-    && countPuller(button.ariaLabel) > 2) {
+    && countPuller(button.ariaLabel) > threshold) {
       arrOfEyes.push(button);
     }
   }
@@ -21,22 +22,44 @@ const creepKiller = () => {
 
 
   // convert eyes to posts
-  const arrOfPosts = [];
+  // arrOfEyes holds button elements which are eyes reacts with count > 2
+  const arrOfParentBlocks = [];
   for (const eyesReact of arrOfEyes) {
-    arrOfPosts.push(eyesReact.closest(".c-virtual_list__item"));
+    // push the message kit block (prevSib of react bar)
+    const parent = eyesReact.parentNode.previousSibling;
+    if ( !parent.className.includes("c-message_kit__blocks--rich_text")) {
+      arrOfParentBlocks.push(parent);
+    }
   }
-  // console.log('arrOfPosts', arrOfPosts);
+  console.log('arrOfParentBlocks', arrOfParentBlocks);
+
+  // select MESSAGE BLOCK for each PARENT BLOCK
+  // arrOfMessageBlocks holds the posts to be hidden / replaced
+  const arrOfMessageBlocks = [];
+  for (let message of arrOfParentBlocks) {
+    // push message block element (2 levels below)
+    arrOfMessageBlocks.push(message.firstElementChild.firstElementChild);
+  }
+  console.log('arrOfMesageBlocks', arrOfMessageBlocks);
 
 
-  // change the properties of the parent element
-  for (const post of arrOfPosts) {
-    
-    const redact = document.createElement('img');
-    redact.src = 'http://glorifiedbicycles.com/wp-content/uploads/2019/09/notice.png';
+  // insert a new img element before messageBlock
+  for (let messageBlock of arrOfMessageBlocks) {
 
-    post.replaceChild(redact, post.childNodes[0]);
+    // console.log('Message Block', messageBlock);
 
-  } 
+    if (messageBlock.className == "c-message__message_blocks") {
+      // create a new image element
+      const newImage = document.createElement('img');
+      newImage.className = "New-Image";
+      newImage.src = 'https://glorifiedbicycles.com/wp-content/uploads/2019/09/notice.png';
+      newImage.style.display = 'inline-flex';
+
+      messageBlock.style.display = 'none';
+      messageBlock.parentNode.prepend(newImage);
+      console.log('Parent', messageBlock.parentNode.childNodes);
+    }
+  }
 
   // end of creepKiller
 }
