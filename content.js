@@ -1,70 +1,93 @@
 console.log('Creepy Eyes are being HIDDEN!');
 
+
+// start of creepKiller
+
 const creepKiller = () => {
+  
   console.log('creepKiller is running!');
 
 
-  // create array of all reacts currently in view
-  const arrOfReacts = document.getElementsByClassName("c-reaction");
-  // console.log(arrOfReacts);
+  const arrOfPosts = Array.from(document.querySelectorAll
+    (".c-message_kit__gutter__right"));
 
 
-  // filter arrOfReacts for ::eyes:: and count is at least 3
-  const arrOfEyes = [];
-  let threshold = 1;
-  for (const button of arrOfReacts) {
-    if (button.ariaLabel.includes('react with eyes')
-    && countPuller(button.ariaLabel) > threshold) {
-      arrOfEyes.push(button);
+  for (const post of arrOfPosts) {
+    const autoClog = post.querySelector('.p-autoclog__hook'),
+          reactBar = post.querySelector('.c-message_kit__reaction_bar'),
+          newImage = post.querySelector('.new_image'),
+          oldImage = post.querySelector('.c-message__message_blocks');
+
+    if (reactBar && autoClog) {
+      for (const button of reactBar.children) {
+        if (button.ariaLabel.includes('react with eyes')
+        && countPuller(button.ariaLabel) >= creepThreshold) {
+          if (!newImage) {
+            const newImgElement = document.createElement('img');
+            newImgElement.className = "new_image";
+            newImgElement.style.display = 'flex';
+            newImgElement.src = 'https://glorifiedbicycles.com/wp-content/uploads/2019/09/notice.png';
+            oldImage.style.display = 'none';
+            oldImage.parentNode.prepend(newImgElement);
+          } else {
+            newImage.style.display = 'flex';
+            oldImage.style.display = 'none';
+          }
+        }
+      }
     }
   }
-  // console.log('arrOfEyes', arrOfEyes);
 
-
-  // convert eyes to posts
-  // arrOfEyes holds button elements which are eyes reacts with count > 2
-  const arrOfParentBlocks = [];
-  for (const eyesReact of arrOfEyes) {
-    // push the message kit block (prevSib of react bar)
-    const parent = eyesReact.parentNode.previousSibling;
-    if ( !parent.className.includes("c-message_kit__blocks--rich_text")) {
-      arrOfParentBlocks.push(parent);
-    }
-  }
-  console.log('arrOfParentBlocks', arrOfParentBlocks);
-
-  // select MESSAGE BLOCK for each PARENT BLOCK
-  // arrOfMessageBlocks holds the posts to be hidden / replaced
-  const arrOfMessageBlocks = [];
-  for (let message of arrOfParentBlocks) {
-    // push message block element (2 levels below)
-    arrOfMessageBlocks.push(message.firstElementChild.firstElementChild);
-  }
-  console.log('arrOfMesageBlocks', arrOfMessageBlocks);
-
-
-  // insert a new img element before messageBlock
-  for (let messageBlock of arrOfMessageBlocks) {
-
-    // console.log('Message Block', messageBlock);
-
-    if (messageBlock.className == "c-message__message_blocks") {
-      // create a new image element
-      const newImage = document.createElement('img');
-      newImage.className = "New-Image";
-      newImage.src = 'https://glorifiedbicycles.com/wp-content/uploads/2019/09/notice.png';
-      newImage.style.display = 'inline-flex';
-
-      messageBlock.style.display = 'none';
-      messageBlock.parentNode.prepend(newImage);
-      console.log('Parent', messageBlock.parentNode.childNodes);
-    }
-  }
 
   // end of creepKiller
 }
 
-const timedCreepExecution = setInterval(creepKiller, 1000);
+
+
+
+
+const creepReviver = () => {
+
+  console.log('creepReviver is running!');
+
+
+  const arrOfPosts = Array.from(document.querySelectorAll
+    (".c-message_kit__gutter__right"));
+
+
+  for (const post of arrOfPosts) {
+    const reactBar = post.querySelector('.c-message_kit__reaction_bar'),
+          newImage = post.querySelector('.new_image'),
+          oldImage = post.querySelector('.c-message__message_blocks'),
+          buttons = Array.from(post.querySelectorAll('.c-reaction')),
+          someButtons = buttons.some((button) => 
+            button.ariaLabel.includes('react with eyes'));
+
+    if (!reactBar && newImage) {
+      newImage.style.display = 'none';
+      oldImage.style.display = 'flex';
+    }
+    else if (newImage && someButtons === false) {
+      newImage.style.display = 'none';
+      oldImage.style.display = 'flex';
+    }
+    else if (reactBar && newImage) {
+      for (const button of reactBar.children) {
+        if (button.ariaLabel.includes('react with eyes') 
+        && countPuller(button.ariaLabel) < creepThreshold) {
+          newImage.style.display = 'none';
+          oldImage.style.display = 'flex';
+        }
+      }
+    }
+  }
+
+  // end creepReviver
+}
+
+
+// define the vote threshold for both creeps
+const creepThreshold = 3;
 
 
 // take the reacts count from ariaLabel string
@@ -79,3 +102,10 @@ function countPuller(string) {
     }
   }
 }
+
+
+// invoke the creepers
+const timedKiller = setInterval(function() {
+  creepKiller();
+  creepReviver();
+}, 1000);
