@@ -1,6 +1,25 @@
 console.log('Creepy Eyes are being HIDDEN!');
 
 
+// define the vote threshold for both creeps
+const creepThreshold = 3;
+
+
+// take the reacts count from ariaLabel string
+function countPuller(string) {
+  
+  let creepCount = '';
+  
+  for (const char of string) {
+    if (char === ' ') {
+      return Number(creepCount);
+    } else {
+      creepCount += char;
+    }
+  }
+}
+
+
 // start of creepKiller
 
 const creepKiller = () => {
@@ -13,6 +32,7 @@ const creepKiller = () => {
 
 
   for (const post of arrOfPosts) {
+
     const autoClog = post.querySelector('.p-autoclog__hook'),
           reactBar = post.querySelector('.c-message_kit__reaction_bar'),
           newImage = post.querySelector('.new_image'),
@@ -56,6 +76,7 @@ const creepReviver = () => {
 
 
   for (const post of arrOfPosts) {
+
     const reactBar = post.querySelector('.c-message_kit__reaction_bar'),
           newImage = post.querySelector('.new_image'),
           oldImage = post.querySelector('.c-message__message_blocks'),
@@ -83,24 +104,6 @@ const creepReviver = () => {
   }
 
   // end creepReviver
-}
-
-
-// define the vote threshold for both creeps
-const creepThreshold = 3;
-
-
-// take the reacts count from ariaLabel string
-function countPuller(string) {
-  let creepCount = '';
-  
-  for (const char of string) {
-    if (char === ' ') {
-      return Number(creepCount);
-    } else {
-      creepCount += char;
-    }
-  }
 }
 
 
