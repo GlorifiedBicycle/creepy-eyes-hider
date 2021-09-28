@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Creepy Eyes Hider",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Stop the nightmares! Filter the creepiest posts from teaching fellows in Slack using the Creepy Eyes Filter extension.",
     "icons": { 
         "16": "icon16.png",

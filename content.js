@@ -7,9 +7,9 @@ const creepThreshold = 3;
 
 // take the reacts count from ariaLabel string
 function countPuller(string) {
-  
+
   let creepCount = '';
-  
+
   for (const char of string) {
     if (char === ' ') {
       return Number(creepCount);
@@ -23,7 +23,7 @@ function countPuller(string) {
 // start of creepKiller
 
 const creepKiller = () => {
-  
+
   console.log('creepKiller is running!');
 
 
@@ -64,8 +64,6 @@ const creepKiller = () => {
 
 
 
-
-
 const creepReviver = () => {
 
   console.log('creepReviver is running!');
@@ -80,9 +78,10 @@ const creepReviver = () => {
     const reactBar = post.querySelector('.c-message_kit__reaction_bar'),
           newImage = post.querySelector('.new_image'),
           oldImage = post.querySelector('.c-message__message_blocks'),
-          buttons = Array.from(post.querySelectorAll('.c-reaction')),
-          someButtons = buttons.some((button) => 
-            button.ariaLabel.includes('react with eyes'));
+          arrOfBut = Array.from(post.querySelectorAll('.c-reaction')),
+          someButtons = arrOfBut.some((button) => {
+            button.ariaLabel.includes('react with eyes');
+          });
 
     if (!reactBar && newImage) {
       newImage.style.display = 'none';
@@ -108,7 +107,7 @@ const creepReviver = () => {
 
 
 // invoke the creepers
-const timedKiller = setInterval(function() {
+const timedCreeper = setInterval(function() {
   creepKiller();
   creepReviver();
 }, 1000);
