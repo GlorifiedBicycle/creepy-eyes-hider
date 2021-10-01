@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Creepy Eyes Hider",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "description": "Stop the nightmares! Filter the creepiest posts from teaching fellows in Slack using the Creepy Eyes Filter extension.",
     "icons": { 
         "16": "icon16.png",
@@ -9,7 +9,7 @@
        "128": "icon128.png"
     },
     "author": "Reland Boyle",
-    "homepage_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "homepage_url": "https://chrome.google.com/webstore/detail/creepy-eyes-hider/mnpilokldlkgbkiociodclhfbciodjdh",
     "content_scripts": [
         {
             "matches": [

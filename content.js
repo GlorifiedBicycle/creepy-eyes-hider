@@ -1,6 +1,13 @@
 console.log('Creepy Eyes are being HIDDEN!');
 
 
+// invoke the creepers
+const timedCreeper = setInterval(function() {
+  creepKiller();
+  creepReviver();
+}, 1000);
+
+
 // define the vote threshold for both creeps
 const creepThreshold = 3;
 
@@ -26,17 +33,18 @@ const creepKiller = () => {
 
   console.log('creepKiller is running!');
 
-
+  
   const arrOfPosts = Array.from(document.querySelectorAll
     (".c-message_kit__gutter__right"));
 
 
   for (const post of arrOfPosts) {
 
-    const autoClog = post.querySelector('.p-autoclog__hook'),
-          reactBar = post.querySelector('.c-message_kit__reaction_bar'),
-          newImage = post.querySelector('.new_image'),
-          oldImage = post.querySelector('.c-message__message_blocks');
+    const newImage = post.querySelector('.new_image'),
+          autoClog = post.querySelector('.p-autoclog__hook'),
+          oldImage = post.querySelector('.c-message__message_blocks'),
+          reactBar = post.querySelector('.c-message_kit__reaction_bar');
+
 
     if (reactBar && autoClog) {
       for (const button of reactBar.children) {
@@ -46,6 +54,7 @@ const creepKiller = () => {
             const newImgElement = document.createElement('img');
             newImgElement.className = "new_image";
             newImgElement.style.display = 'flex';
+            newImgElement.style.width = "460px"
             newImgElement.src = 'https://glorifiedbicycles.com/wp-content/uploads/2019/09/notice.png';
             oldImage.style.display = 'none';
             oldImage.parentNode.prepend(newImgElement);
@@ -75,19 +84,17 @@ const creepReviver = () => {
 
   for (const post of arrOfPosts) {
 
-    const reactBar = post.querySelector('.c-message_kit__reaction_bar'),
-          newImage = post.querySelector('.new_image'),
+    const newImage = post.querySelector('.new_image'),
           oldImage = post.querySelector('.c-message__message_blocks'),
+          reactBar = post.querySelector('.c-message_kit__reaction_bar'),
           arrOfBut = Array.from(post.querySelectorAll('.c-reaction')),
-          someButtons = arrOfBut.some((button) => {
-            button.ariaLabel.includes('react with eyes');
-          });
+          someButt = arrOfBut.some(button => button.ariaLabel.includes('react with eyes'));
 
     if (!reactBar && newImage) {
       newImage.style.display = 'none';
       oldImage.style.display = 'flex';
     }
-    else if (newImage && someButtons === false) {
+    else if (newImage && someButt === false) {
       newImage.style.display = 'none';
       oldImage.style.display = 'flex';
     }
@@ -104,10 +111,3 @@ const creepReviver = () => {
 
   // end creepReviver
 }
-
-
-// invoke the creepers
-const timedCreeper = setInterval(function() {
-  creepKiller();
-  creepReviver();
-}, 1000);
